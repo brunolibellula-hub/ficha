@@ -1,0 +1,352 @@
+{
+  "Ancestries": [
+    "Clank.jpg",
+    "Drakona.jpg",
+    "Dwarf.jpg",
+    "Elf.jpg",
+    "Faerie.jpg",
+    "Faun.jpg",
+    "Firbolg.jpg",
+    "Fungril.jpg",
+    "Galapa.jpg",
+    "Giant.jpg",
+    "Goblin.jpg",
+    "Halfling.jpg",
+    "Human.jpg",
+    "Infernis.jpg",
+    "Katari.jpg",
+    "Orc.jpg",
+    "Ribbet.jpg",
+    "Simiah.jpg"
+  ],
+  "Communities": [
+    "Highborne.jpg",
+    "Loreborne.jpg",
+    "Orderborne.jpg",
+    "Ridgeborne.jpg",
+    "Seaborne.jpg",
+    "Slyborne.jpg",
+    "Underborne.jpg",
+    "Wanderborne.jpg",
+    "Wildborne.jpg"
+  ],
+  "Classes": {
+    "Bard": {
+      "Troubadour": [
+        "Bard_Troubadour_Foundation.jpg",
+        "Bard_Troubadour_Mastery.jpg",
+        "Bard_Troubadour_Specialisation.jpg"
+      ],
+      "Wordsmith": [
+        "Bard_Wordsmith_Foundation.jpg",
+        "Bard_Wordsmith_Mastery.jpg",
+        "Bard_Wordsmith_Specialisation.jpg"
+      ]
+    },
+    "Druid": {
+      "WardenOfRenewal": [
+        "Druid_WardenOfRenewal_Foundation.jpg",
+        "Druid_WardenOfRenewal_Mastery.jpg",
+        "Druid_WardenOfRenewal_Specialisation.jpg"
+      ],
+      "WardenOfTheElements": [
+        "Druid_WardenOfTheElements_Foundation.jpg",
+        "Druid_WardenOfTheElements_Mastery.jpg",
+        "Druid_WardenOfTheElements_Specialisation.jpg"
+      ]
+    },
+    "Guardian": {
+      "Stalwart": [
+        "Guardian_Stalwart_Foundation.jpg",
+        "Guardian_Stalwart_Mastery.jpg",
+        "Guardian_Stalwart_Specialisation.jpg"
+      ],
+      "Vengeance": [
+        "Guardian_Vengeance_Foundation.jpg",
+        "Guardian_Vengeance_Mastery.jpg",
+        "Guardian_Vengeance_Specialisation.jpg"
+      ]
+    },
+    "Ranger": {
+      "Beastbound": [
+        "Ranger_Beastbound_Foundation.jpg",
+        "Ranger_Beastbound_Mastery.jpg",
+        "Ranger_Beastbound_Specialisation.jpg"
+      ],
+      "Wayfinder": [
+        "Ranger_Wayfinder_Foundation.jpg",
+        "Ranger_Wayfinder_Mastery.jpg",
+        "Ranger_Wayfinder_Specialisation.jpg"
+      ]
+    },
+    "Rogue": {
+      "Nightwalker": [
+        "Rogue_Nightwalker_Foundation.jpg",
+        "Rogue_Nightwalker_Mastery.jpg",
+        "Rogue_Nightwalker_Specialisation.jpg"
+      ],
+      "Syndicate": [
+        "Rogue_Syndicate_Foundation.jpg",
+        "Rogue_Syndicate_Mastery.jpg",
+        "Rogue_Syndicate_Specialisation.jpg"
+      ]
+    },
+    "Seraph": {
+      "DivineWielder": [
+        "Seraph_DivineWielder_Foundation.jpg",
+        "Seraph_DivineWielder_Mastery.jpg",
+        "Seraph_DivineWielder_Specialisation.jpg"
+      ],
+      "WingedSentinel": [
+        "Seraph_WingedSentinel_Foundation.jpg",
+        "Seraph_WingedSentinel_Mastery.jpg",
+        "Seraph_WingedSentinel_Specialisation.jpg"
+      ]
+    },
+    "Sorcerer": {
+      "ElementalOrigin": [
+        "Sorcerer_ElementalOrigin_Foundation.jpg",
+        "Sorcerer_ElementalOrigin_Mastery.jpg",
+        "Sorcerer_ElementalOrigin_Specialisation.jpg"
+      ],
+      "PrimalOrigin": [
+        "Sorcerer_PrimalOrigin_Foundation.jpg",
+        "Sorcerer_PrimalOrigin_Mastery.jpg",
+        "Sorcerer_PrimalOrigin_Specialisation.jpg"
+      ]
+    },
+    "Warrior": {
+      "CallOfTheBrave": [
+        "Warrior_CallOfTheBrave_Foundation.jpg",
+        "Warrior_CallOfTheBrave_Mastery.jpg",
+        "Warrior_CallOfTheBrave_Specialisation.jpg"
+      ],
+      "CallOfTheSlayer": [
+        "Warrior_CallOfTheSlayer_Foundation.jpg",
+        "Warrior_CallOfTheSlayer_Mastery.jpg",
+        "Warrior_CallOfTheSlayer_Specialisation.jpg"
+      ]
+    },
+    "Wizard": {
+      "SchoolOfKnowledge": [
+        "Wizard_SchoolOfKnowledge_Foundation.jpg",
+        "Wizard_SchoolOfKnowledge_Mastery.jpg",
+        "Wizard_SchoolOfKnowledge_Specialisation.jpg"
+      ],
+      "SchoolOfWar": [
+        "Wizard_SchoolOfWar_Foundation.jpg",
+        "Wizard_SchoolOfWar_Mastery.jpg",
+        "Wizard_SchoolOfWar_Specialisation.jpg"
+      ]
+    }
+  },
+  "Domains": {
+    "ARCANA": [
+      "01 - Rune Ward.jpg",
+      "01 - Unleash Chaos.jpg",
+      "01 - Wall Walk.jpg",
+      "02 - Cinder Grasp.jpg",
+      "02 - Floating Eye.jpg",
+      "03 - Counterspell.jpg",
+      "03 - Flight.jpg",
+      "04 - Blink Out.jpg",
+      "04 - Preservation Blast.jpg",
+      "05 - Chain Lightning.jpg",
+      "05 - Premonition.jpg",
+      "06 - Rift Walker.jpg",
+      "06 - Telekinesis.jpg",
+      "07 - Arcana-Touched.jpg",
+      "07 - Cloaking Blast.jpg",
+      "08 - Arcane Reflection.jpg",
+      "08 - Confusing Aura.jpg",
+      "09 - Earthquake.jpg",
+      "09 - Sensory Projection.jpg",
+      "10 - Adjust Reality.jpg",
+      "10 - Falling Sky.jpg"
+    ],
+    "BLADE": [
+      "01 - Get Back Up.jpg",
+      "01 - Not Good Enough.jpg",
+      "01 - Whirlwind.jpg",
+      "02 - A Soldier's Bond.jpg",
+      "02 - Reckless.jpg",
+      "03 - Scramble.jpg",
+      "03 - Versatile Fighter.jpg",
+      "04 - Deadly Focus.jpg",
+      "04 - Fortified Armor.jpg",
+      "05 - Champion's Edge.jpg",
+      "05 - Vitality.jpg",
+      "06 - Battle-Hardened.jpg",
+      "06 - Rage Up.jpg",
+      "07 - Blade-Touched.jpg",
+      "07 - Glancing Blows.jpg",
+      "08 - Battle Cry.jpg",
+      "08 - Frenzy.jpg",
+      "09 - Gore And Glory.jpg",
+      "09 - Reaper's Strike.jpg",
+      "10 - Battle Monster.jpg",
+      "10 - Onslaught.jpg"
+    ],
+    "BONE": [
+      "01 - Deft Maneuvers.jpg",
+      "01 - I See It Coming.jpg",
+      "01 - Untouchable.jpg",
+      "02 - Ferocity.jpg",
+      "02 - Strategic Approach.jpg",
+      "03 - Brace.jpg",
+      "03 - Tactician.jpg",
+      "04 - Boost.jpg",
+      "04 - Redirect.jpg",
+      "05 - Know Thy Enemy.jpg",
+      "05 - Signature Move.jpg",
+      "06 - Rapid Riposte.jpg",
+      "06 - Recovery.jpg",
+      "07 - Bone-Touched.jpg",
+      "07 - Cruel Precision.jpg",
+      "08 - Breaking Blow.jpg",
+      "08 - Wrangle.jpg",
+      "09 - On The Brink.jpg",
+      "09 - Splintering Strike.jpg",
+      "10 - Deathrun.jpg",
+      "10 - Swift Step.jpg"
+    ],
+    "CODEX": [
+      "01 - Book Of Ava.jpg",
+      "01 - Book Of Illiat.jpg",
+      "01 - Book Of Tyfar.jpg",
+      "02 - Book Of Sitil.jpg",
+      "02 - Book Of Vagras.jpg",
+      "03 - Book Of Korvax.jpg",
+      "03 - Book Of Norai.jpg",
+      "04 - Book Of Exota.jpg",
+      "04 - Book Of Grynn.jpg",
+      "05 - Manifest Wall.jpg",
+      "05 - Teleport.jpg",
+      "06 - Banish.jpg",
+      "06 - Sigil Of Retribution.jpg",
+      "07 - Book Of Homet.jpg",
+      "07 - Codex-Touched.jpg",
+      "08 - Book Of Vyola.jpg",
+      "08 - Safe Haven.jpg",
+      "09 - Book Of Ronin.jpg",
+      "09 - Desintegration Wave.jpg",
+      "10 - Book Of Yarrow.jpg",
+      "10 - Transcendent Union.jpg"
+    ],
+    "GRACE": [
+      "01 - Deft Deceiver.jpg",
+      "01 - Enrapture.jpg",
+      "01 - Inspirational Words.jpg",
+      "02 - Tell No Lies.jpg",
+      "02 - Troublemaker.jpg",
+      "03 - Hypnotic Shimmer.jpg",
+      "03 - Invisibility.jpg",
+      "04 - Soothing Speech.jpg",
+      "04 - Through Your Eyes.jpg",
+      "05 - Thought Delver.jpg",
+      "05 - Words Of Discord.jpg",
+      "06 - Never Upstaged.jpg",
+      "06 - Share The Burden.jpg",
+      "07 - Endless Charisma.jpg",
+      "07 - Grace-Touched.jpg",
+      "08 - Astral Projection.jpg",
+      "08 - Mass Enrapture.jpg",
+      "09 - Copycat.jpg",
+      "09 - Master Of The Craft.jpg",
+      "10 - Encore.jpg",
+      "10 - Notorious.jpg"
+    ],
+    "MIDNIGHT": [
+      "01 - Pick And Pull.jpg",
+      "01 - Rain Of Blades.jpg",
+      "01 - Uncanny Disguise.jpg",
+      "02 - Midnight Spirit.jpg",
+      "02 - Shadowbind.jpg",
+      "03 - Chokehold.jpg",
+      "03 - Veil Of Night.jpg",
+      "04 - Glyph Of Nightfall.jpg",
+      "04 - Stealth Expertise.jpg",
+      "05 - Hush.jpg",
+      "05 - Phantom Retreat.jpg",
+      "06 - Dark Whispers.jpg",
+      "06 - Mass Disguise.jpg",
+      "07 - Midnight-Touched.jpg",
+      "07 - Vanishing Dodge.jpg",
+      "08 - Shadowhunter.jpg",
+      "08 - Spellcharge.jpg",
+      "09 - Night Terror.jpg",
+      "09 - Twilight Toll.jpg",
+      "10 - Eclipse.jpg",
+      "10 - Specter Of The Dark.jpg"
+    ],
+    "SAGE": [
+      "01 - Gifted Tracker.jpg",
+      "01 - Nature's Tongue.jpg",
+      "01 - Vicious Entangle.jpg",
+      "02 - Conjure Swarm.jpg",
+      "02 - Natural Familiar.jpg",
+      "03 - Corrosive Projectile.jpg",
+      "03 - Towering Stalk.jpg",
+      "04 - Death Grip.jpg",
+      "04 - Healing Field.jpg",
+      "05 - Thorn Skin.jpg",
+      "05 - Wild Fortress.jpg",
+      "06 - Conjured Steeds.jpg",
+      "06 - Forager.jpg",
+      "07 - Sage-Touched.jpg",
+      "07 - Wild Surge.jpg",
+      "08 - Forest Sprites.jpg",
+      "08 - Rejuvenation Barrier.jpg",
+      "09 - Fane Of The Wilds.jpg",
+      "09 - Plant Dominion.jpg",
+      "10 - Force Of Nature.jpg",
+      "10 - Tempest.jpg"
+    ],
+    "SPLENDOR": [
+      "01 - Bolt Beacon.jpg",
+      "01 - Mending Touch.jpg",
+      "01 - Reassurance.jpg",
+      "02 - Final Words.jpg",
+      "02 - Healing Hands.jpg",
+      "03 - Second Wind.jpg",
+      "03 - Voice Of Reason.jpg",
+      "04 - Divination.jpg",
+      "04 - Life Ward.jpg",
+      "05 - Shape Material.jpg",
+      "05 - Smite.jpg",
+      "06 - Restoration.jpg",
+      "06 - Zone Of Protection.jpg",
+      "07 - Healing Strike.jpg",
+      "07 - Splendor-Touched.jpg",
+      "08 - Shield Aura.jpg",
+      "08 - Stunning Sunlight.jpg",
+      "09 - Overwhelming Aura.jpg",
+      "09 - Salvation Beam.jpg",
+      "10 - Invigoration.jpg",
+      "10 - Resurrection.jpg"
+    ],
+    "VALOR": [
+      "01 - Bare Bones.jpg",
+      "01 - Forceful Push.jpg",
+      "01 - I Am Your Shield.jpg",
+      "02 - Body Basher.jpg",
+      "02 - Bold Presence.jpg",
+      "03 - Critical Inspiration.jpg",
+      "03 - Lean On Me.jpg",
+      "04 - Goad Them On.jpg",
+      "04 - Support Tank.jpg",
+      "05 - Armorer.jpg",
+      "05 - Rousing Strike.jpg",
+      "06 - Inevitable.jpg",
+      "06 - Rise Up.jpg",
+      "07 - Shrug It Off.jpg",
+      "07 - Valor-Touched.jpg",
+      "08 - Full Surge.jpg",
+      "08 - Ground Pound.jpg",
+      "09 - Hold The Line.jpg",
+      "09 - Lead By Example.jpg",
+      "10 - Unbreakable.jpg",
+      "10 - Unyielding Armor.jpg"
+    ]
+  }
+}

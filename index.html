@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem - Daggerheart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="character-header">
+            <div class="logo">
+                <h1>DAGGERHEART</h1>
+                <p>CHARACTER SHEET</p>
+            </div>
+            <div class="basic-info">
+                <div class="input-group">
+                    <label for="character-name">NAME</label>
+                    <input type="text" id="character-name" placeholder="Nome do Personagem">
+                </div>
+                <div class="input-group">
+                    <label for="pronouns">PRONOUNS</label>
+                    <input type="text" id="pronouns" placeholder="Pronomes">
+                </div>
+                <div class="input-group">
+                    <label for="heritage">HERITAGE</label>
+                    <input type="text" id="heritage" placeholder="Ancestralidade">
+                </div>
+                <div class="input-group">
+                    <label for="class-select">CLASS</label>
+                    <select id="class-select">
+                        <option value="">Selecione uma classe</option>
+                        <option value="Bard">Bard</option>
+                        <option value="Druid">Druid</option>
+                        <option value="Guardian">Guardian</option>
+                        <option value="Ranger">Ranger</option>
+                        <option value="Rogue">Rogue</option>
+                        <option value="Seraph">Seraph</option>
+                        <option value="Sorcerer">Sorcerer</option>
+                        <option value="Warrior">Warrior</option>
+                        <option value="Wizard">Wizard</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>DOMAINS</label>
+                    <div id="available-domains" class="domains-display"></div>
+                </div>
+            </div>
+            <div class="level-section">
+                <div class="level-display">
+                    <span class="level-number" id="level-display">1</span>
+                    <label>LEVEL</label>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Defense Section -->
+                <div class="defense-section">
+                    <div class="evasion-armor">
+                        <div class="stat-circle">
+                            <input type="number" id="evasion" placeholder="10">
+                            <label>EVASION</label>
+                        </div>
+                        <div class="armor-display">
+                            <div class="shield-icon">🛡️</div>
+                            <input type="number" id="armor" placeholder="10">
+                            <label>ARMOR</label>
+                            <div class="armor-boxes" id="armor-boxes"></div>
+                        </div>
+                    </div>
+                    <div class="hit-points">
+                        <div class="hp-circles">
+                            <div class="hp-row" id="hp-major"></div>
+                            <div class="hp-row" id="hp-minor"></div>
+                            <div class="hp-row" id="hp-severe"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attributes -->
+                <div class="attributes-section">
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="agility" placeholder="0">
+                        </div>
+                        <label>AGILITY</label>
+                        <p>Sprint, Leap, Maneuver</p>
+                    </div>
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="strength" placeholder="0">
+                        </div>
+                        <label>STRENGTH</label>
+                        <p>Lift, Smash, Grapple</p>
+                    </div>
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="finesse" placeholder="0">
+                        </div>
+                        <label>FINESSE</label>
+                        <p>Control, Hide, Tinker</p>
+                    </div>
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="instinct" placeholder="0">
+                        </div>
+                        <label>INSTINCT</label>
+                        <p>Perceive, Sense, Navigate</p>
+                    </div>
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="presence" placeholder="0">
+                        </div>
+                        <label>PRESENCE</label>
+                        <p>Charm, Perform, Deceive</p>
+                    </div>
+                    <div class="attribute">
+                        <div class="attribute-circle">
+                            <input type="number" id="knowledge" placeholder="0">
+                        </div>
+                        <label>KNOWLEDGE</label>
+                        <p>Recall, Analyze, Comprehend</p>
+                    </div>
+                </div>
+
+                <!-- Damage & Health -->
+                <div class="damage-health-section">
+                    <h3>DAMAGE & HEALTH</h3>
+                    <div class="damage-track">
+                        <div class="damage-box">
+                            <label>MINOR DAMAGE</label>
+                            <input type="text" id="minor-damage" placeholder="Mark 1 HP">
+                        </div>
+                        <div class="damage-box">
+                            <label>MAJOR DAMAGE</label>
+                            <input type="text" id="major-damage" placeholder="Mark 2 HP">
+                        </div>
+                        <div class="damage-box">
+                            <label>SEVERE DAMAGE</label>
+                            <input type="text" id="severe-damage" placeholder="Mark 3 HP">
+                        </div>
+                    </div>
+                    
+                    <div class="hp-section">
+                        <label>HP</label>
+                        <div class="hp-boxes" id="hp-boxes"></div>
+                    </div>
+                </div>
+
+                <!-- Stress -->
+                <div class="stress-section">
+                    <label>STRESS</label>
+                    <div class="stress-boxes" id="stress-boxes"></div>
+                </div>
+
+                <!-- Hope -->
+                <div class="hope-section">
+                    <h3>HOPE</h3>
+                    <p>Spend a Hope to use an experience or help an ally.</p>
+                    <div class="hope-track" id="hope-track"></div>
+                    <div class="hope-feature">
+                        <label>HOPE FEATURE</label>
+                        <textarea id="hope-feature" placeholder="Descreva sua característica de esperança"></textarea>
+                    </div>
+                </div>
+
+                <!-- Experience -->
+                <div class="experience-section">
+                    <h3>EXPERIENCE</h3>
+                    <div class="experience-bars" id="experience-bars"></div>
+                </div>
+
+                <!-- Gold -->
+                <div class="gold-section">
+                    <h3>GOLD</h3>
+                    <div class="gold-track">
+                        <div class="gold-row">
+                            <label>HANDFULS</label>
+                            <div class="gold-circles" id="gold-handfuls"></div>
+                        </div>
+                        <div class="gold-row">
+                            <label>BAGS</label>
+                            <div class="gold-circles" id="gold-bags"></div>
+                        </div>
+                        <div class="gold-row">
+                            <label>CHEST</label>
+                            <div class="gold-circles" id="gold-chest"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class Feature -->
+                <div class="class-feature-section">
+                    <h3>CLASS FEATURE</h3>
+                    <textarea id="class-feature" placeholder="Descreva suas características de classe"></textarea>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <!-- Active Weapons -->
+                <div class="weapons-section">
+                    <h3>ACTIVE WEAPONS</h3>
+                    <div class="proficiency-track">
+                        <label>PROFICIENCY</label>
+                        <div class="proficiency-circles" id="proficiency-circles"></div>
+                    </div>
+
+                    <div class="weapon primary-weapon">
+                        <h4>PRIMARY</h4>
+                        <div class="weapon-fields">
+                            <div class="input-group">
+                                <label>NAME</label>
+                                <input type="text" id="primary-weapon-name">
+                            </div>
+                            <div class="input-group">
+                                <label>TRAIT & RANGE</label>
+                                <input type="text" id="primary-weapon-trait">
+                            </div>
+                            <div class="input-group">
+                                <label>DAMAGE DICE & TYPE</label>
+                                <input type="text" id="primary-weapon-damage">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>FEATURE</label>
+                                <textarea id="primary-weapon-feature"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weapon secondary-weapon">
+                        <h4>SECONDARY</h4>
+                        <div class="weapon-fields">
+                            <div class="input-group">
+                                <label>NAME</label>
+                                <input type="text" id="secondary-weapon-name">
+                            </div>
+                            <div class="input-group">
+                                <label>TRAIT & RANGE</label>
+                                <input type="text" id="secondary-weapon-trait">
+                            </div>
+                            <div class="input-group">
+                                <label>DAMAGE DICE & TYPE</label>
+                                <input type="text" id="secondary-weapon-damage">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>FEATURE</label>
+                                <textarea id="secondary-weapon-feature"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Armor -->
+                <div class="armor-section">
+                    <h3>ACTIVE ARMOR</h3>
+                    <div class="armor-fields">
+                        <div class="input-group">
+                            <label>NAME</label>
+                            <input type="text" id="armor-name">
+                        </div>
+                        <div class="input-group">
+                            <label>BASE THRESHOLDS</label>
+                            <input type="text" id="armor-thresholds">
+                        </div>
+                        <div class="input-group">
+                            <label>BASE SCORE</label>
+                            <input type="text" id="armor-score">
+                        </div>
+                        <div class="input-group full-width">
+                            <label>FEATURE</label>
+                            <textarea id="armor-feature"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory -->
+                <div class="inventory-section">
+                    <h3>INVENTORY</h3>
+                    <textarea id="inventory" placeholder="Liste seus itens aqui"></textarea>
+                </div>
+
+                <!-- Inventory Weapons -->
+                <div class="inventory-weapons-section">
+                    <div class="inventory-weapon">
+                        <h4>INVENTORY WEAPON</h4>
+                        <div class="weapon-type-selector">
+                            <input type="radio" id="inv-weapon-1-primary" name="inv-weapon-1-type" value="primary">
+                            <label for="inv-weapon-1-primary">PRIMARY</label>
+                            <input type="radio" id="inv-weapon-1-secondary" name="inv-weapon-1-type" value="secondary">
+                            <label for="inv-weapon-1-secondary">SECONDARY</label>
+                        </div>
+                        <div class="weapon-fields">
+                            <div class="input-group">
+                                <label>NAME</label>
+                                <input type="text" id="inv-weapon-1-name">
+                            </div>
+                            <div class="input-group">
+                                <label>TRAIT & RANGE</label>
+                                <input type="text" id="inv-weapon-1-trait">
+                            </div>
+                            <div class="input-group">
+                                <label>DAMAGE DICE & TYPE</label>
+                                <input type="text" id="inv-weapon-1-damage">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>FEATURE</label>
+                                <textarea id="inv-weapon-1-feature"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inventory-weapon">
+                        <h4>INVENTORY WEAPON</h4>
+                        <div class="weapon-type-selector">
+                            <input type="radio" id="inv-weapon-2-primary" name="inv-weapon-2-type" value="primary">
+                            <label for="inv-weapon-2-primary">PRIMARY</label>
+                            <input type="radio" id="inv-weapon-2-secondary" name="inv-weapon-2-type" value="secondary">
+                            <label for="inv-weapon-2-secondary">SECONDARY</label>
+                        </div>
+                        <div class="weapon-fields">
+                            <div class="input-group">
+                                <label>NAME</label>
+                                <input type="text" id="inv-weapon-2-name">
+                            </div>
+                            <div class="input-group">
+                                <label>TRAIT & RANGE</label>
+                                <input type="text" id="inv-weapon-2-trait">
+                            </div>
+                            <div class="input-group">
+                                <label>DAMAGE DICE & TYPE</label>
+                                <input type="text" id="inv-weapon-2-damage">
+                            </div>
+                            <div class="input-group full-width">
+                                <label>FEATURE</label>
+                                <textarea id="inv-weapon-2-feature"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Section - Reorganizada -->
+        <div class="cards-section" id="cards-section">
+            <h2>CARTAS DO PERSONAGEM</h2>
+            
+            <!-- Primeira Linha: Raça, Comunidade, Classes -->
+            <div class="cards-row first-row">
+                <!-- Raça -->
+                <div class="card-category">
+                    <h3>RAÇA</h3>
+                    <div class="card-slot" data-type="race" data-index="0">
+                        <div class="card-placeholder">
+                            <span>Clique para adicionar carta de Raça</span>
+                            <input type="file" accept="image/*" class="card-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comunidade -->
+                <div class="card-category">
+                    <h3>COMUNIDADE</h3>
+                    <div class="card-slot" data-type="community" data-index="0">
+                        <div class="card-placeholder">
+                            <span>Clique para adicionar carta de Comunidade</span>
+                            <input type="file" accept="image/*" class="card-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classes (3 cartas) -->
+                <div class="card-category">
+                    <h3>CLASSE (3 cartas)</h3>
+                    <div class="card-slots-row">
+                        <div class="card-slot-container">
+                            <div class="card-slot" data-type="class" data-index="0">
+                                <div class="card-placeholder">
+                                    <span>Carta de Classe 1</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-slot-container">
+                            <div class="card-slot" data-type="class" data-index="1">
+                                <div class="card-placeholder">
+                                    <span>Carta de Classe 2</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-slot-container">
+                            <div class="card-slot" data-type="class" data-index="2">
+                                <div class="card-placeholder">
+                                    <span>Carta de Classe 3</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segunda Linha: Domínios Ativos -->
+            <div class="cards-row second-row">
+                <div class="card-category full-width">
+                    <h3>DOMÍNIOS ATIVOS (5 cartas)</h3>
+                    <div class="card-slots-row domains-row">
+                        <!-- Domínio 1 -->
+                        <div class="card-slot-container" draggable="true" data-domain-index="0">
+                            <div class="card-slot" data-type="domain" data-index="0">
+                                <div class="card-placeholder">
+                                    <span>Domínio 1</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="0">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="0">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Domínio 2 -->
+                        <div class="card-slot-container" draggable="true" data-domain-index="1">
+                            <div class="card-slot" data-type="domain" data-index="1">
+                                <div class="card-placeholder">
+                                    <span>Domínio 2</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="1">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="1">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Domínio 3 -->
+                        <div class="card-slot-container" draggable="true" data-domain-index="2">
+                            <div class="card-slot" data-type="domain" data-index="2">
+                                <div class="card-placeholder">
+                                    <span>Domínio 3</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="2">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="2">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Domínio 4 -->
+                        <div class="card-slot-container" draggable="true" data-domain-index="3">
+                            <div class="card-slot" data-type="domain" data-index="3">
+                                <div class="card-placeholder">
+                                    <span>Domínio 4</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="3">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="3">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Domínio 5 -->
+                        <div class="card-slot-container" draggable="true" data-domain-index="4">
+                            <div class="card-slot" data-type="domain" data-index="4">
+                                <div class="card-placeholder">
+                                    <span>Domínio 5</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="4">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="4">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terceira Linha: Cofre -->
+            <div class="cards-row third-row">
+                <div class="card-category full-width">
+                    <h3>COFRE (5 cartas)</h3>
+                    <div class="card-slots-row vault-row">
+                        <!-- Cofre 1 -->
+                        <div class="card-slot-container" draggable="true" data-vault-index="0">
+                            <div class="card-slot" data-type="vault" data-index="0">
+                                <div class="card-placeholder">
+                                    <span>Cofre 1</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="5">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="5">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Cofre 2 -->
+                        <div class="card-slot-container" draggable="true" data-vault-index="1">
+                            <div class="card-slot" data-type="vault" data-index="1">
+                                <div class="card-placeholder">
+                                    <span>Cofre 2</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="6">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="6">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Cofre 3 -->
+                        <div class="card-slot-container" draggable="true" data-vault-index="2">
+                            <div class="card-slot" data-type="vault" data-index="2">
+                                <div class="card-placeholder">
+                                    <span>Cofre 3</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="7">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="7">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Cofre 4 -->
+                        <div class="card-slot-container" draggable="true" data-vault-index="3">
+                            <div class="card-slot" data-type="vault" data-index="3">
+                                <div class="card-placeholder">
+                                    <span>Cofre 4</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="8">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="8">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Cofre 5 -->
+                        <div class="card-slot-container" draggable="true" data-vault-index="4">
+                            <div class="card-slot" data-type="vault" data-index="4">
+                                <div class="card-placeholder">
+                                    <span>Cofre 5</span>
+                                    <input type="file" accept="image/*" class="card-input">
+                                </div>
+                            </div>
+                            <div class="card-counter">
+                                <button class="counter-btn minus" data-index="9">-</button>
+                                <span class="counter-value">0</span>
+                                <button class="counter-btn plus" data-index="9">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        Tiers Section
+        <div class="tiers-section">
+            <h2>OPÇÕES DE MELHORIA POR TIER</h2>
+            
+            Tier 2
+            <div class="tier" data-tier="2">
+                <h3>TIER 2: NÍVEIS 2–4</h3>
+                <p><strong>No nível 2, ganhe uma Experiência adicional em +2 e ganhe +1 de bônus na Proficiência.</strong></p>
+                <p>Escolha duas opções por nível da lista abaixo e marque-as.</p>
+                <div class="tier-options">
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="hp-slot">
+                        <input type="checkbox" data-option="hp-slot">
+                        <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="stress-slot">
+                        <input type="checkbox" data-option="stress-slot">
+                        <span>Ganhe permanentemente um slot de Estresse.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="experience-bonus">
+                        <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="domain-card">
+                        <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso (até nível 4).</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="evasion-bonus">
+                        <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                    </label>
+                </div>
+            </div>
+
+            Tier 3
+            <div class="tier" data-tier="3">
+                <h3>TIER 3: NÍVEIS 5–7</h3>
+                <p><strong>No nível 5, ganhe uma Experiência adicional em +2 e limpe todas as marcas nos traços de personagem. Então ganhe +1 de bônus na Proficiência.</strong></p>
+                <p>Escolha duas opções da lista por nível abaixo ou qualquer uma do tier anterior e marque-as.</p>
+                <div class="tier-options">
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="hp-slot">
+                        <input type="checkbox" data-option="hp-slot">
+                        <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="stress-slot">
+                        <input type="checkbox" data-option="stress-slot">
+                        <span>Ganhe permanentemente um slot de Estresse.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="experience-bonus">
+                        <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="domain-card">
+                        <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso (até nível 7).</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="evasion-bonus">
+                        <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="subclass-card">
+                        <span>Pegue uma carta de subclasse aprimorada. Então risque a opção de multiclasse para este tier.</span>
+                    </label>
+                    <label class="tier-option special-option">
+                        <input type="checkbox" data-option="proficiency-increase">
+                        <span>Aumente sua Proficiência em +1.</span>
+                    </label>
+                    <label class="tier-option special-option">
+                        <input type="checkbox" data-option="multiclass">
+                        <span>Multiclasse: Escolha uma classe adicional para seu personagem, então risque uma opção não utilizada de "Pegue uma carta de subclasse aprimorada" e a outra opção de multiclasse nesta folha.</span>
+                    </label>
+                </div>
+            </div>
+
+            Tier 4
+            <div class="tier" data-tier="4">
+                <h3>TIER 4: NÍVEIS 8–10</h3>
+                <p><strong>No nível 8, ganhe uma Experiência adicional em +2 e limpe todas as marcas nos traços de personagem. Então ganhe +1 de bônus na Proficiência.</strong></p>
+                <p>Escolha duas opções da lista abaixo por nível ou qualquer uma do tier anterior e marque-as.</p>
+                <div class="tier-options">
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <input type="checkbox" data-option="trait-bonus">
+                        <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="hp-slot">
+                        <input type="checkbox" data-option="hp-slot">
+                        <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="stress-slot">
+                        <input type="checkbox" data-option="stress-slot">
+                        <span>Ganhe permanentemente um slot de Estresse.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="experience-bonus">
+                        <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="domain-card">
+                        <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="evasion-bonus">
+                        <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                    </label>
+                    <label class="tier-option">
+                        <input type="checkbox" data-option="subclass-card">
+                        <span>Pegue uma carta de subclasse aprimorada. Então risque a opção de multiclasse para este tier.</span>
+                    </label>
+                    <label class="tier-option special-option">
+                        <input type="checkbox" data-option="proficiency-increase">
+                        <span>Aumente sua Proficiência em +1.</span>
+                    </label>
+                    <label class="tier-option special-option">
+                        <input type="checkbox" data-option="multiclass">
+                        <span>Multiclasse: Escolha uma classe adicional para seu personagem, então risque uma opção não utilizada de "Pegue uma carta de subclasse aprimorada" e a outra opção de multiclasse nesta folha.</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        -->
+
+        
+
+                <!-- Tiers Section -->
+        <div class="tiers-section">
+            <h2>OPÇÕES DE MELHORIA POR TIER</h2>
+            
+            <div class="tiers-container">
+                <!-- Tier 2 -->
+                <div class="tier-column">
+                    <div class="tier" data-tier="2">
+                        <div class="tier-counter">
+                            <span class="current">0</span> / <span class="max">6</span> checkboxes marcados
+                        </div>
+                        <h3>TIER 2: NÍVEIS 2–4</h3>
+                        <p><strong>No nível 2, ganhe uma Experiência adicional em +2 e ganhe +1 de bônus na Proficiência.</strong></p>
+                        <p>Escolha duas opções por nível da lista abaixo e marque-as.</p>
+                        
+                        <div class="tier-options">
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="hp-slot">
+                                <input type="checkbox" data-option="hp-slot">
+                                <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="stress-slot">
+                                <input type="checkbox" data-option="stress-slot">
+                                <span>Ganhe permanentemente um slot de Estresse.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="experience-bonus">
+                                <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="domain-card">
+                                <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso (até nível 4).</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="evasion-bonus">
+                                <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tier-separator"></div>
+
+                <!-- Tier 3 -->
+                <div class="tier-column">
+                    <div class="tier" data-tier="3">
+                        <div class="tier-counter">
+                            <span class="current">0</span> / <span class="max">6</span> checkboxes marcados
+                        </div>
+                        <h3>TIER 3: NÍVEIS 5–7</h3>
+                        <p><strong>No nível 5, ganhe uma Experiência adicional em +2 e limpe todas as marcas nos traços de personagem. Então ganhe +1 de bônus na Proficiência.</strong></p>
+                        <p>Escolha duas opções da lista por nível abaixo ou qualquer uma do tier anterior e marque-as.</p>
+                        
+                        <div class="tier-options">
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="hp-slot">
+                                <input type="checkbox" data-option="hp-slot">
+                                <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="stress-slot">
+                                <input type="checkbox" data-option="stress-slot">
+                                <span>Ganhe permanentemente um slot de Estresse.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="experience-bonus">
+                                <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="domain-card">
+                                <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso (até nível 7).</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="evasion-bonus">
+                                <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="subclass-card">
+                                <span>Pegue uma carta de subclasse aprimorada. Então risque a opção de multiclasse para este tier.</span>
+                            </label>
+                            <label class="tier-option special-option">
+                                <input type="checkbox" data-option="proficiency-increase">
+                                <span>Aumente sua Proficiência em +1.</span>
+                            </label>
+                            <label class="tier-option special-option">
+                                <input type="checkbox" data-option="multiclass">
+                                <span>Multiclasse: Escolha uma classe adicional para seu personagem, então risque uma opção não utilizada de "Pegue uma carta de subclasse aprimorada" e a outra opção de multiclasse nesta folha.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tier-separator"></div>
+
+                <!-- Tier 4 -->
+                <div class="tier-column">
+                    <div class="tier" data-tier="4">
+                        <div class="tier-counter">
+                            <span class="current">0</span> / <span class="max">6</span> checkboxes marcados
+                        </div>
+                        <h3>TIER 4: NÍVEIS 8–10</h3>
+                        <p><strong>No nível 8, ganhe uma Experiência adicional em +2 e limpe todas as marcas nos traços de personagem. Então ganhe +1 de bônus na Proficiência.</strong></p>
+                        <p>Escolha duas opções da lista abaixo por nível ou qualquer uma do tier anterior e marque-as.</p>
+                        
+                        <div class="tier-options">
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <input type="checkbox" data-option="trait-bonus">
+                                <span>Ganhe +1 de bônus em dois traços de personagem não marcados e marque-os.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="hp-slot">
+                                <input type="checkbox" data-option="hp-slot">
+                                <span>Ganhe permanentemente um slot de Pontos de Vida.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="stress-slot">
+                                <input type="checkbox" data-option="stress-slot">
+                                <span>Ganhe permanentemente um slot de Estresse.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="experience-bonus">
+                                <span>Ganhe permanentemente +1 de bônus em duas Experiências.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="domain-card">
+                                <span>Escolha uma carta de domínio adicional do seu nível ou inferior de um domínio que você tem acesso.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="evasion-bonus">
+                                <span>Ganhe permanentemente +1 de bônus na sua Evasão.</span>
+                            </label>
+                            <label class="tier-option">
+                                <input type="checkbox" data-option="subclass-card">
+                                <span>Pegue uma carta de subclasse aprimorada. Então risque a opção de multiclasse para este tier.</span>
+                            </label>
+                            <label class="tier-option special-option">
+                                <input type="checkbox" data-option="proficiency-increase">
+                                <span>Aumente sua Proficiência em +1.</span>
+                            </label>
+                            <label class="tier-option special-option">
+                                <input type="checkbox" data-option="multiclass">
+                                <span>Multiclasse: Escolha uma classe adicional para seu personagem, então risque uma opção não utilizada de "Pegue uma carta de subclasse aprimorada" e a outra opção de multiclasse nesta folha.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save/Load Controls -->
+        <div class="controls">
+            <button id="save-character">Salvar Personagem</button>
+            <button id="load-character">Carregar Personagem</button>
+            <button id="clear-character">Limpar Ficha</button>
+        </div>
+    </div>
+
+     <!-- Modal de Seleção de Cartas -->
+    <div id="card-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Selecionar Carta</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="breadcrumb" class="breadcrumb"></div>
+                <div id="card-grid" class="card-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
