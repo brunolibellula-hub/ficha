@@ -1,6 +1,7 @@
-let cardsData = {};// Daggerheart Character Sheet JavaScript
+// Daggerheart Character Sheet JavaScript
 
-
+// Variável global para dados das cartas
+let cardsData = {};
 
 class DaggerheartCharacter {
     constructor() {
@@ -100,6 +101,7 @@ class DaggerheartCharacter {
                 domains: [null, null, null, null, null],
                 vault: [null, null, null, null, null]
             },
+            
             // Tiers data
             tiers: {
                 tier2: {
@@ -120,7 +122,6 @@ class DaggerheartCharacter {
             abilityCounters: Array(10).fill(0)
         };
 
-        this.cardBasePath = "C:\\Users\\Work07\\PycharmProjects\\teste\\Cards";
         this.currentModalSlot = null;
         this.currentPath = [];
         this.selectedCards = {
@@ -137,9 +138,10 @@ class DaggerheartCharacter {
     init() {
         this.createInteractiveElements();
         this.bindEvents();
-        this.bindCardEvents(); // Mover esta linha para depois do bindEvents
+        this.bindCardEvents();
         this.loadCharacter();
-        this.bindTierEvents(); // Nova linha
+        this.bindTierEvents();
+        
         // Adicionar um pequeno delay para garantir que o DOM esteja completamente carregado
         setTimeout(() => {
             this.bindTierEvents();
@@ -147,8 +149,68 @@ class DaggerheartCharacter {
         }, 100);
     }
 
-    //codigo
-    setupModalContent(type, modalTitle, breadcrumb, cardGrid) {
+    bindCardEvents() {
+        // Race card
+        this.bindCardSlotClick('race', 0);
+        
+        // Community card
+        this.bindCardSlotClick('community', 0);
+        
+        // Class cards
+        for (let i = 0; i < 3; i++) {
+            this.bindCardSlotClick('class', i);
+        }
+        
+        // Domain cards
+        for (let i = 0; i < 5; i++) {
+            this.bindCardSlotClick('domain', i);
+        }
+        
+        // Vault cards
+        for (let i = 0; i < 5; i++) {
+            this.bindCardSlotClick('vault', i);
+        }
+        
+        // Fechar modal
+        document.querySelector('.close').addEventListener('click', () => {
+            this.closeCardModal();
+        });
+        
+        // Fechar modal ao clicar fora
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('card-modal');
+            if (e.target === modal) {
+                this.closeCardModal();
+            }
+        });
+    }
+
+    // Novo método para vincular clique nos slots
+    bindCardSlotClick(type, index) {
+        const slot = document.querySelector(`[data-type="${type}"][data-index="${index}"]`);
+        
+        if (!slot) return;
+        
+        slot.addEventListener('click', () => {
+            this.openCardSelectionModal(type, index);
+        });
+        
+        // Permitir clicar na imagem para trocar
+        slot.addEventListener('click', (e) => {
+            if (e.target.classList.contains('card-image') || e.target.classList.contains('card-fallback')) {
+                this.openCardSelectionModal(type, index);
+            }
+        });
+    }
+
+    // Método openCardSelectionModal atualizado
+    openCardSelectionModal(type, index) {
+        this.currentModalSlot = { type, index };
+        this.currentPath = [];
+        
+        const modal = document.getElementById('card-modal');
+        const modalTitle = document.getElementById('modal-title');
+        
         // Definir título baseado no tipo
         const typeNames = {
             race: 'Raça',
@@ -157,62 +219,16 @@ class DaggerheartCharacter {
             domain: 'Domínio',
             vault: 'Cofre'
         };
-    
-    modalTitle.textContent = `Selecionar Carta de ${typeNames[type]}`;
-    
-    // Inicializar breadcrumb
-    this.updateBreadcrumb();
-    
-    // Carregar conteúdo inicial
-    this.loadModalContent(type);
-}
-
-    // Método para abrir o modal de seleção de cartas
-    openCardSelectionModal(type, index) {
-        this.currentModalSlot = { type, index };
-        this.currentPath = [];
         
-        const modal = document.getElementById('card-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const breadcrumb = document.getElementById('breadcrumb');
-        const cardGrid = document.getElementById('card-grid');
+        modalTitle.textContent = `Selecionar Carta de ${typeNames[type]}`;
         
-        // Carregar dados das cartas se ainda não carregados
-        if (Object.keys(cardsData).length === 0) {
-            this.loadCardsData().then(() => {
-                this.setupModalContent(type, modalTitle, breadcrumb, cardGrid);
-            });
-        } else {
-            this.setupModalContent(type, modalTitle, breadcrumb, cardGrid);
-        }
+        // Inicializar breadcrumb
+        this.updateBreadcrumb();
+        
+        // Carregar conteúdo inicial
+        this.loadModalContent(type);
         
         modal.style.display = 'block';
-    }
-
-    async loadCardsData() {
-        try {
-            const response = await fetch('cards-data.json');
-            cardsData = await response.json();
-        } catch (error) {
-            console.error('Erro ao carregar dados das cartas:', error);
-            // Fallback para dados estáticos se o arquivo não estiver disponível
-            cardsData = {
-                "Ancestries": ["Clank.jpg", "Drakona.jpg", "Dwarf.jpg", "Elf.jpg", "Faerie.jpg", "Faun.jpg", "Firbolg.jpg", "Fungril.jpg", "Galapa.jpg", "Giant.jpg", "Goblin.jpg", "Halfling.jpg", "Human.jpg", "Infernis.jpg", "Katari.jpg", "Orc.jpg", "Ribbet.jpg", "Simiah.jpg"],
-                "Communities": ["Highborne.jpg", "Loreborne.jpg", "Orderborne.jpg", "Ridgeborne.jpg", "Seaborne.jpg", "Slyborne.jpg", "Underborne.jpg", "Wanderborne.jpg", "Wildborne.jpg"],
-                "Classes": {
-                    "Bard": {
-                        "Troubadour": ["Bard_Troubadour_Foundation.jpg", "Bard_Troubadour_Mastery.jpg", "Bard_Troubadour_Specialisation.jpg"],
-                        "Wordsmith": ["Bard_Wordsmith_Foundation.jpg", "Bard_Wordsmith_Mastery.jpg", "Bard_Wordsmith_Specialisation.jpg"]
-                    }
-                    // ... outros dados das classes (reduzido para exemplo)
-                },
-                "Domains": {
-                    "ARCANA": ["01 - Rune Ward.jpg", "01 - Unleash Chaos.jpg", "01 - Wall Walk.jpg"],
-                    "BLADE": ["01 - Get Back Up.jpg", "01 - Not Good Enough.jpg", "01 - Whirlwind.jpg"]
-                    // ... outros dados dos domínios (reduzido para exemplo)
-                }
-            };
-        }
     }
 
     // Atualizar breadcrumb
@@ -248,18 +264,99 @@ class DaggerheartCharacter {
         });
     }
 
-    // Carregar conteúdo do modal baseado no caminho atual
-    async loadModalContent(type) {
+    // Método loadModalContent atualizado
+    loadModalContent(type) {
         const cardGrid = document.getElementById('card-grid');
-    cardGrid.innerHTML = '';
-    
-    this.updateBreadcrumb();
-    
-    let items = [];
-    
-    try {
-        // Determinar base path baseado no tipo
+        cardGrid.innerHTML = '<div class="card-item">Carregando cartas...</div>';
+        
+        this.updateBreadcrumb();
+        
+        // Carregar dados das cartas se ainda não carregados
+        if (Object.keys(cardsData).length === 0) {
+            this.loadCardsData().then(() => {
+                this.displayModalContent(type);
+            }).catch(error => {
+                console.error('Erro ao carregar dados:', error);
+                cardGrid.innerHTML = '<div class="card-item">Erro ao carregar cartas. Verifique o console.</div>';
+            });
+        } else {
+            this.displayModalContent(type);
+        }
+    }
+
+    // Novo método para carregar dados das cartas
+    async loadCardsData() {
+        try {
+            const response = await fetch('cards-data.json');
+            cardsData = await response.json();
+        } catch (error) {
+            console.error('Erro ao carregar dados das cartas:', error);
+            // Fallback para dados estáticos se o arquivo não estiver disponível
+            cardsData = {
+                "Ancestries": ["Clank.jpg", "Drakona.jpg", "Dwarf.jpg", "Elf.jpg", "Faerie.jpg", "Faun.jpg", "Firbolg.jpg", "Fungril.jpg", "Galapa.jpg", "Giant.jpg", "Goblin.jpg", "Halfling.jpg", "Human.jpg", "Infernis.jpg", "Katari.jpg", "Orc.jpg", "Ribbet.jpg", "Simiah.jpg"],
+                "Communities": ["Highborne.jpg", "Loreborne.jpg", "Orderborne.jpg", "Ridgeborne.jpg", "Seaborne.jpg", "Slyborne.jpg", "Underborne.jpg", "Wanderborne.jpg", "Wildborne.jpg"],
+                "Classes": {
+                    "Bard": {
+                        "Troubadour": ["Bard_Troubadour_Foundation.jpg", "Bard_Troubadour_Mastery.jpg", "Bard_Troubadour_Specialisation.jpg"],
+                        "Wordsmith": ["Bard_Wordsmith_Foundation.jpg", "Bard_Wordsmith_Mastery.jpg", "Bard_Wordsmith_Specialisation.jpg"]
+                    },
+                    "Druid": {
+                        "WardenOfRenewal": ["Druid_WardenOfRenewal_Foundation.jpg", "Druid_WardenOfRenewal_Mastery.jpg", "Druid_WardenOfRenewal_Specialisation.jpg"],
+                        "WardenOfTheElements": ["Druid_WardenOfTheElements_Foundation.jpg", "Druid_WardenOfTheElements_Mastery.jpg", "Druid_WardenOfTheElements_Specialisation.jpg"]
+                    },
+                    "Guardian": {
+                        "Stalwart": ["Guardian_Stalwart_Foundation.jpg", "Guardian_Stalwart_Mastery.jpg", "Guardian_Stalwart_Specialisation.jpg"],
+                        "Vengeance": ["Guardian_Vengeance_Foundation.jpg", "Guardian_Vengeance_Mastery.jpg", "Guardian_Vengeance_Specialisation.jpg"]
+                    },
+                    "Ranger": {
+                        "Beastbound": ["Ranger_Beastbound_Foundation.jpg", "Ranger_Beastbound_Mastery.jpg", "Ranger_Beastbound_Specialisation.jpg"],
+                        "Wayfinder": ["Ranger_Wayfinder_Foundation.jpg", "Ranger_Wayfinder_Mastery.jpg", "Ranger_Wayfinder_Specialisation.jpg"]
+                    },
+                    "Rogue": {
+                        "Nightwalker": ["Rogue_Nightwalker_Foundation.jpg", "Rogue_Nightwalker_Mastery.jpg", "Rogue_Nightwalker_Specialisation.jpg"],
+                        "Syndicate": ["Rogue_Syndicate_Foundation.jpg", "Rogue_Syndicate_Mastery.jpg", "Rogue_Syndicate_Specialisation.jpg"]
+                    },
+                    "Seraph": {
+                        "DivineWielder": ["Seraph_DivineWielder_Foundation.jpg", "Seraph_DivineWielder_Mastery.jpg", "Seraph_DivineWielder_Specialisation.jpg"],
+                        "WingedSentinel": ["Seraph_WingedSentinel_Foundation.jpg", "Seraph_WingedSentinel_Mastery.jpg", "Seraph_WingedSentinel_Specialisation.jpg"]
+                    },
+                    "Sorcerer": {
+                        "ElementalOrigin": ["Sorcerer_ElementalOrigin_Foundation.jpg", "Sorcerer_ElementalOrigin_Mastery.jpg", "Sorcerer_ElementalOrigin_Specialisation.jpg"],
+                        "PrimalOrigin": ["Sorcerer_PrimalOrigin_Foundation.jpg", "Sorcerer_PrimalOrigin_Mastery.jpg", "Sorcerer_PrimalOrigin_Specialisation.jpg"]
+                    },
+                    "Warrior": {
+                        "CallOfTheBrave": ["Warrior_CallOfTheBrave_Foundation.jpg", "Warrior_CallOfTheBrave_Mastery.jpg", "Warrior_CallOfTheBrave_Specialisation.jpg"],
+                        "CallOfTheSlayer": ["Warrior_CallOfTheSlayer_Foundation.jpg", "Warrior_CallOfTheSlayer_Mastery.jpg", "Warrior_CallOfTheSlayer_Specialisation.jpg"]
+                    },
+                    "Wizard": {
+                        "SchoolOfKnowledge": ["Wizard_SchoolOfKnowledge_Foundation.jpg", "Wizard_SchoolOfKnowledge_Mastery.jpg", "Wizard_SchoolOfKnowledge_Specialisation.jpg"],
+                        "SchoolOfWar": ["Wizard_SchoolOfWar_Foundation.jpg", "Wizard_SchoolOfWar_Mastery.jpg", "Wizard_SchoolOfWar_Specialisation.jpg"]
+                    }
+                },
+                "Domains": {
+                    "ARCANA": ["01 - Rune Ward.jpg", "01 - Unleash Chaos.jpg", "01 - Wall Walk.jpg"],
+                    "BLADE": ["01 - Get Back Up.jpg", "01 - Not Good Enough.jpg", "01 - Whirlwind.jpg"],
+                    "BONE": ["01 - Deft Maneuvers.jpg", "01 - I See It Coming.jpg", "01 - Untouchable.jpg"],
+                    "CODEX": ["01 - Book Of Ava.jpg", "01 - Book Of Illiat.jpg", "01 - Book Of Tyfar.jpg"],
+                    "GRACE": ["01 - Deft Deceiver.jpg", "01 - Enrapture.jpg", "01 - Inspirational Words.jpg"],
+                    "MIDNIGHT": ["01 - Pick And Pull.jpg", "01 - Rain Of Blades.jpg", "01 - Uncanny Disguise.jpg"],
+                    "SAGE": ["01 - Gifted Tracker.jpg", "01 - Nature's Tongue.jpg", "01 - Vicious Entangle.jpg"],
+                    "SPLENDOR": ["01 - Bolt Beacon.jpg", "01 - Mending Touch.jpg", "01 - Reassurance.jpg"],
+                    "VALOR": ["01 - Bare Bones.jpg", "01 - Forceful Push.jpg", "01 - I Am Your Shield.jpg"]
+                }
+            };
+        }
+    }
+
+    // Novo método para exibir conteúdo do modal
+    displayModalContent(type) {
+        const cardGrid = document.getElementById('card-grid');
+        cardGrid.innerHTML = '';
+        
+        let items = [];
         let basePath = '';
+        
+        // Determinar base path baseado no tipo
         switch(type) {
             case 'race':
                 basePath = 'Ancestries';
@@ -276,171 +373,122 @@ class DaggerheartCharacter {
                 break;
         }
         
-        // Navegar pela estrutura baseado no currentPath
-        let currentData = cardsData[basePath];
-        
-        // Navegar pelos níveis do currentPath
-        for (const segment of this.currentPath) {
-            if (currentData && currentData[segment]) {
-                currentData = currentData[segment];
-            } else {
-                console.error('Caminho inválido:', segment);
-                currentData = null;
-                break;
-            }
-        }
-        
-        if (currentData) {
-            // Se currentData é um array, são arquivos
-            if (Array.isArray(currentData)) {
-                items = currentData.map(fileName => ({
-                    type: 'image',
-                    name: fileName,
-                    path: this.buildCardPath(type, fileName)
-                }));
-            } 
-            // Se currentData é um objeto, são pastas
-            else if (typeof currentData === 'object') {
-                items = Object.keys(currentData).map(key => ({
-                    type: 'folder',
-                    name: key,
-                    path: key
-                }));
-            }
-        }
-        
-        this.displayModalItems(items, type);
-    } catch (error) {
-        console.error('Erro ao carregar conteúdo:', error);
-        cardGrid.innerHTML = '<div class="card-item">Erro ao carregar cartas</div>';
-    }
-    }
-
-    // Simular leitura de diretório (substituir por chamada real se possível)
-    async readDirectory(path, type) {
-        // Esta é uma simulação - em um ambiente real, você precisaria de um backend
-        // ou usar Electron para acessar o sistema de arquivos
-        
-        const items = [];
-        
-        // Mapeamento baseado na estrutura fornecida
-        if (path.includes('Ancestries')) {
-            const ancestries = ['Clank', 'Drakona', 'Dwarf', 'Elf', 'Faerie', 'Faun', 'Firbolg', 
-                              'Fungril', 'Galapa', 'Giant', 'Goblin', 'Halfling', 'Human', 
-                              'Infernis', 'Katari', 'Orc', 'Ribbet', 'Simiah'];
-            items.push(...ancestries.map(name => ({ type: 'image', name: name + '.jpg' })));
-        }
-        else if (path.includes('Communities')) {
-            const communities = ['Highborne', 'Loreborne', 'Orderborne', 'Ridgeborne', 
-                               'Seaborne', 'Slyborne', 'Underborne', 'Wanderborne', 'Wildborne'];
-            items.push(...communities.map(name => ({ type: 'image', name: name + '.jpg' })));
-        }
-        else if (path.includes('Classes')) {
-            if (this.currentPath.length === 0) {
-                // Nível de classes
-                const classes = ['Bard', 'Druid', 'Guardian', 'Ranger', 'Rogue', 'Seraph', 'Sorcerer', 'Warrior', 'Wizard'];
-                items.push(...classes.map(name => ({ type: 'folder', name })));
-            } else if (this.currentPath.length === 1) {
-                // Nível de subclasses
-                const classSubclasses = {
-                    'Bard': ['Troubadour', 'Wordsmith'],
-                    'Druid': ['WardenOfRenewal', 'WardenOfTheElements'],
-                    'Guardian': ['Stalwart', 'Vengeance'],
-                    'Ranger': ['Beastbound', 'Wayfinder'],
-                    'Rogue': ['Nightwalker', 'Syndicate'],
-                    'Seraph': ['DivineWielder', 'WingedSentinel'],
-                    'Sorcerer': ['ElementalOrigin', 'PrimalOrigin'],
-                    'Warrior': ['CallOfTheBrave', 'CallOfTheSlayer'],
-                    'Wizard': ['SchoolOfKnowledge', 'SchoolOfWar']
-                };
-                const currentClass = this.currentPath[0];
-                if (classSubclasses[currentClass]) {
-                    items.push(...classSubclasses[currentClass].map(name => ({ type: 'folder', name })));
+        try {
+            // Navegar pela estrutura baseado no currentPath
+            let currentData = cardsData[basePath];
+            
+            // Navegar pelos níveis do currentPath
+            for (const segment of this.currentPath) {
+                if (currentData && currentData[segment]) {
+                    currentData = currentData[segment];
+                } else {
+                    console.error('Caminho inválido:', segment);
+                    currentData = null;
+                    break;
                 }
-            } else if (this.currentPath.length === 2) {
-                // Nível de cartas da subclasse
-                const cardTypes = ['Foundation', 'Mastery', 'Specialisation'];
-                const currentClass = this.currentPath[0];
-                const currentSubclass = this.currentPath[1];
-                
-                items.push(...cardTypes.map(cardType => ({
-                    type: 'image',
-                    name: `${currentClass}_${currentSubclass}_${cardType}.jpg`
-                })));
             }
-        }
-        else if (path.includes('Domains')) {
-            if (this.currentPath.length === 0) {
-                // Nível de domínios
-                const domains = ['ARCANA', 'BLADE', 'BONE', 'CODEX', 'GRACE', 'MIDNIGHT', 'SAGE', 'SPLENDOR', 'VALOR'];
-                items.push(...domains.map(name => ({ type: 'folder', name })));
-            } else {
-                // Nível de cartas do domínio
-                // Simulação - em um ambiente real, você listaria os arquivos reais
-                const domainCards = Array.from({length: 10}, (_, i) => i + 1)
-                    .flatMap(num => [
-                        { type: 'image', name: `${num.toString().padStart(2, '0')} - Carta ${num}A.jpg` },
-                        { type: 'image', name: `${num.toString().padStart(2, '0')} - Carta ${num}B.jpg` }
-                    ]);
-                items.push(...domainCards);
+            
+            if (currentData) {
+                // Se currentData é um array, são arquivos
+                if (Array.isArray(currentData)) {
+                    items = currentData.map(fileName => ({
+                        type: 'image',
+                        name: fileName,
+                        path: this.buildCardPath(type, fileName)
+                    }));
+                } 
+                // Se currentData é um objeto, são pastas
+                else if (typeof currentData === 'object') {
+                    items = Object.keys(currentData).map(key => ({
+                        type: 'folder',
+                        name: key,
+                        path: key
+                    }));
+                }
             }
+            
+            if (items.length === 0) {
+                cardGrid.innerHTML = '<div class="card-item">Nenhuma carta encontrada neste diretório.</div>';
+                return;
+            }
+            
+            this.displayModalItems(items, type);
+        } catch (error) {
+            console.error('Erro ao carregar conteúdo:', error);
+            cardGrid.innerHTML = '<div class="card-item">Erro ao carregar cartas</div>';
         }
-        
-        return items;
     }
 
     // Exibir itens no modal
     displayModalItems(items, type) {
         const cardGrid = document.getElementById('card-grid');
-    cardGrid.innerHTML = '';
-    
-    if (items.length === 0) {
-        cardGrid.innerHTML = '<div class="card-item">Nenhuma carta encontrada</div>';
-        return;
-    }
-    
-    items.forEach(item => {
-        const cardItem = document.createElement('div');
-        cardItem.className = `card-item ${item.type}`;
+        cardGrid.innerHTML = '';
         
-        if (item.type === 'folder') {
-            cardItem.innerHTML = `
-                <div class="folder-icon">📁</div>
-                <div class="card-name">${item.name}</div>
-                <div class="current-path">Pasta</div>
-            `;
+        items.forEach(item => {
+            const cardItem = document.createElement('div');
+            cardItem.className = `card-item ${item.type}`;
             
-            cardItem.addEventListener('click', () => {
-                this.currentPath.push(item.name);
-                this.loadModalContent(type);
-            });
-        } else {
-            // Verificar se a carta já foi selecionada
-            const isSelected = this.isCardAlreadySelected(type, item.path);
-            const selectedClass = isSelected ? 'selected' : '';
-            
-            cardItem.innerHTML = `
-                <div class="card-preview-container">
-                    <img src="Cards/${this.getCardImagePath(type, item.name)}" alt="${item.name}" class="card-preview" onerror="this.style.display='none'">
-                    <div class="card-placeholder-icon" style="display: none;">🃏</div>
-                </div>
-                <div class="card-name">${item.name.replace('.jpg', '')}</div>
-                ${isSelected ? '<div class="card-selected-indicator">✓ SELECIONADA</div>' : ''}
-            `;
-            
-            if (!isSelected) {
+            if (item.type === 'folder') {
+                cardItem.innerHTML = `
+                    <div class="folder-icon">📁</div>
+                    <div class="card-name">${item.name}</div>
+                    <div class="current-path">Pasta</div>
+                `;
+                
                 cardItem.addEventListener('click', () => {
-                    this.selectCard(item.name, item.path);
+                    this.currentPath.push(item.name);
+                    this.loadModalContent(type);
                 });
             } else {
-                cardItem.classList.add('disabled');
+                // Verificar se a carta já foi selecionada
+                const isSelected = this.isCardAlreadySelected(type, item.path);
+                
+                cardItem.innerHTML = `
+                    <div class="card-preview-container">
+                        <img src="Cards/${this.getCardImagePath(type, item.name)}" alt="${item.name}" class="card-preview" onerror="this.style.display='none'">
+                        <div class="card-placeholder-icon" style="display: none;">🃏</div>
+                    </div>
+                    <div class="card-name">${item.name.replace('.jpg', '')}</div>
+                    ${isSelected ? '<div class="card-selected-indicator">✓ SELECIONADA</div>' : ''}
+                `;
+                
+                if (!isSelected) {
+                    cardItem.addEventListener('click', () => {
+                        this.selectCard(item.name, item.path);
+                    });
+                } else {
+                    cardItem.classList.add('disabled');
+                }
             }
-        }
-        
-        cardGrid.appendChild(cardItem);
-    });
+            
+            cardGrid.appendChild(cardItem);
+        });
     }
 
+    // Construir caminho da carta
+    buildCardPath(type, cardName) {
+        let path = '';
+        
+        switch(type) {
+            case 'race':
+                path = `Ancestries/${cardName}`;
+                break;
+            case 'community':
+                path = `Communities/${cardName}`;
+                break;
+            case 'class':
+                path = `Classes/${this.currentPath.join('/')}/${cardName}`;
+                break;
+            case 'domain':
+            case 'vault':
+                path = `Domains/${this.currentPath.join('/')}/${cardName}`;
+                break;
+        }
+        
+        return path;
+    }
+
+    // Obter caminho da imagem
     getCardImagePath(type, cardName) {
         let basePath = '';
         
@@ -463,48 +511,10 @@ class DaggerheartCharacter {
         return `${basePath}/${cardName}`;
     }
 
-    // Selecionar uma carta
-    selectCard(cardName) {
-        const { type, index } = this.currentModalSlot;
-    
-    // Atualizar o slot com a nova carta
-    this.setCardToSlot(type, index, cardPath, cardName);
-    
-    // Fechar modal
-    this.closeCardModal();
-    
-    this.showNotification('Carta selecionada com sucesso!', 'success');
-    }
-
-    // Construir caminho completo da carta
-    buildCardPath(cardName) {
-        let path = '';
-    
-    switch(type) {
-        case 'race':
-            path = `Ancestries/${cardName}`;
-            break;
-        case 'community':
-            path = `Communities/${cardName}`;
-            break;
-        case 'class':
-            // Construir caminho completo para classe
-            path = `Classes/${this.currentPath.join('/')}/${cardName}`;
-            break;
-        case 'domain':
-        case 'vault':
-            // Construir caminho completo para domínio
-            path = `Domains/${this.currentPath.join('/')}/${cardName}`;
-            break;
-    }
-    
-    return path;
-    }
-
     // Verificar se a carta já foi selecionada
     isCardAlreadySelected(type, cardPath) {
         const { cards } = this.data;
-    
+        
         switch(type) {
             case 'race':
                 return cards.race === cardPath;
@@ -521,44 +531,67 @@ class DaggerheartCharacter {
         }
     }
 
+    // Selecionar uma carta
+    selectCard(cardName, cardPath) {
+        const { type, index } = this.currentModalSlot;
+        
+        // Verificar se a carta já foi selecionada em outro slot
+        if (this.isCardAlreadySelected(type, cardPath)) {
+            this.showNotification('Esta carta já foi selecionada em outro slot!', 'warning');
+            return;
+        }
+        
+        // Atualizar o slot com a nova carta
+        this.setCardToSlot(type, index, cardPath, cardName);
+        
+        // Adicionar aos selecionados
+        this.selectedCards[type].add(cardPath);
+        
+        // Fechar modal
+        this.closeCardModal();
+        
+        this.showNotification('Carta selecionada com sucesso!', 'success');
+    }
+
     // Definir carta no slot
-    setCardToSlot(type, index, cardPath) {
+    setCardToSlot(type, index, cardPath, cardName) {
         const slot = document.querySelector(`[data-type="${type}"][data-index="${index}"]`);
-    const imagePath = `Cards/${cardPath}`;
-    
-    // Criar elemento de imagem
-    const img = document.createElement('img');
-    img.src = imagePath;
-    img.className = 'card-image';
-    img.alt = cardName;
-    img.onerror = function() {
-        // Fallback se a imagem não carregar
-        this.style.display = 'none';
-        const fallback = document.createElement('div');
-        fallback.className = 'card-fallback';
-        fallback.innerHTML = `
-            <div style="text-align: center; padding: 10px;">
-                <div style="font-size: 2em;">🃏</div>
-                <div style="font-size: 0.8em; margin-top: 10px;">${cardName.replace('.jpg', '')}</div>
-            </div>
-        `;
-        this.parentNode.appendChild(fallback);
-    };
-    
-    const placeholder = slot.querySelector('.card-placeholder');
-    placeholder.style.display = 'none';
-    
-    // Remover imagem existente se houver
-    const existingImg = slot.querySelector('.card-image');
-    const existingFallback = slot.querySelector('.card-fallback');
-    if (existingImg) existingImg.remove();
-    if (existingFallback) existingFallback.remove();
-    
-    slot.appendChild(img);
-    slot.classList.add('has-image');
-    
-    // Salvar dados da carta
-    this.saveCardData(type, index, cardPath);
+        const imagePath = `Cards/${cardPath}`;
+        
+        // Criar elemento de imagem
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.className = 'card-image';
+        img.alt = cardName;
+        img.onerror = function() {
+            // Fallback se a imagem não carregar
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'card-fallback';
+            fallback.innerHTML = `
+                <div style="text-align: center; padding: 10px;">
+                    <div style="font-size: 2em;">🃏</div>
+                    <div style="font-size: 0.8em; margin-top: 10px;">${cardName.replace('.jpg', '')}</div>
+                    <div style="font-size: 0.7em; color: #666; margin-top: 5px;">[Imagem não carregada]</div>
+                </div>
+            `;
+            this.parentNode.appendChild(fallback);
+        };
+        
+        const placeholder = slot.querySelector('.card-placeholder');
+        placeholder.style.display = 'none';
+        
+        // Remover conteúdo existente se houver
+        const existingImg = slot.querySelector('.card-image');
+        const existingFallback = slot.querySelector('.card-fallback');
+        if (existingImg) existingImg.remove();
+        if (existingFallback) existingFallback.remove();
+        
+        slot.appendChild(img);
+        slot.classList.add('has-image');
+        
+        // Salvar dados da carta
+        this.saveCardData(type, index, cardPath);
     }
 
     // Fechar modal
@@ -569,71 +602,19 @@ class DaggerheartCharacter {
         this.currentPath = [];
     }
 
-    // Modificar o bindCardEvents para usar o modal
-    bindCardEvents() {
-        // Race card
-        this.bindCardSlotModal('race', 0);
-        
-        // Community card
-        this.bindCardSlotModal('community', 0);
-        
-        // Class cards
-        for (let i = 0; i < 3; i++) {
-            this.bindCardSlotModal('class', i);
+    // Salvar dados da carta
+    saveCardData(type, index, cardPath) {
+        if (type === 'race' || type === 'community') {
+            this.data.cards[type] = cardPath;
+        } else if (type === 'class') {
+            this.data.cards.class[index] = cardPath;
+        } else if (type === 'domain') {
+            this.data.cards.domains[index] = cardPath;
+        } else if (type === 'vault') {
+            this.data.cards.vault[index] = cardPath;
         }
-        
-        // Domain cards
-        for (let i = 0; i < 5; i++) {
-            this.bindCardSlotModal('domain', i);
-        }
-        
-        // Vault cards
-        for (let i = 0; i < 5; i++) {
-            this.bindCardSlotModal('vault', i);
-        }
-        
-        // Fechar modal
-        document.querySelector('.close').addEventListener('click', () => {
-            this.closeCardModal();
-        });
-        
-        // Fechar modal ao clicar fora
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('card-modal');
-            if (e.target === modal) {
-                this.closeCardModal();
-            }
-        });
+        this.saveCharacter();
     }
-
-    bindCardSlotModal(type, index) {
-        const slots = document.querySelectorAll(`[data-type="${type}"][data-index="${index}"]`);
-        const slot = slots[0];
-        
-        if (!slot) return;
-        
-        const placeholder = slot.querySelector('.card-placeholder');
-        
-        if (placeholder) {
-            // Remover input de arquivo existente
-            const existingInput = placeholder.querySelector('.card-input');
-            if (existingInput) {
-                existingInput.remove();
-            }
-            
-            placeholder.addEventListener('click', () => {
-                this.openCardSelectionModal(type, index);
-            });
-            
-            // Permitir clicar na imagem para trocar
-            slot.addEventListener('click', (e) => {
-                if (e.target.classList.contains('card-image')) {
-                    this.openCardSelectionModal(type, index);
-                }
-            });
-        }
-    }
-    //codigo
 
     bindTierEvents() {
         const tiers = ['2', '3', '4'];
@@ -912,7 +893,7 @@ class DaggerheartCharacter {
         // Tier events
         this.bindTierEvents();
         
-        // Card upload events
+        // Card events
         this.bindCardEvents();
 
         // Vincular eventos dos contadores
@@ -1008,59 +989,6 @@ class DaggerheartCharacter {
         }
     }
     
-    bindCardEvents() {
-        // Race card
-        this.bindCardSlot('race', 0);
-        
-        // Community card
-        this.bindCardSlot('community', 0);
-        
-        // Class cards
-        for (let i = 0; i < 3; i++) {
-            this.bindCardSlot('class', i);
-        }
-        
-        // Domain cards
-        for (let i = 0; i < 5; i++) {
-            this.bindCardSlot('domain', i);
-        }
-        
-        // Vault cards
-        for (let i = 0; i < 5; i++) {
-            this.bindCardSlot('vault', i);
-        }
-    }
-    
-    bindCardSlot(type, index) {
-        const slots = document.querySelectorAll(`[data-type="${type}"][data-index="${index}"]`);
-        const slot = slots[0];
-        
-        if (!slot) return;
-        
-        const input = slot.querySelector('.card-input');
-        const placeholder = slot.querySelector('.card-placeholder');
-        
-        if (input && placeholder) {
-            input.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const imageData = e.target.result;
-                        this.setCardImage(slot, imageData, type, index);
-                        this.saveCardData(type, index, imageData);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-            
-            // Click to upload
-            placeholder.addEventListener('click', () => {
-                input.click();
-            });
-        }
-    }
-    
     bindDragAndDropEvents() {
         const containers = document.querySelectorAll('.card-slot-container[draggable="true"]');
         
@@ -1144,66 +1072,6 @@ class DaggerheartCharacter {
         this.showNotification('Cartas trocadas com sucesso!', 'success');
     }
     
-    setCardImage(slot, imageData, type, index) {
-        const placeholder = slot.querySelector('.card-placeholder');
-        
-        // Remove existing image if any
-        const existingImg = slot.querySelector('.card-image');
-        if (existingImg) {
-            existingImg.remove();
-        }
-        
-        // Remove existing name display if any
-        const existingName = slot.querySelector('.card-name-display');
-        if (existingName) {
-            existingName.remove();
-        }
-        
-        // Create new image
-        const img = document.createElement('img');
-        img.src = imageData;
-        img.className = 'card-image';
-        img.alt = `${type} card ${index + 1}`;
-        
-        // Add remove functionality
-        img.addEventListener('dblclick', () => {
-            if (confirm('Deseja remover esta carta?')) {
-                this.removeCard(slot, type, index);
-            }
-        });
-        
-        slot.appendChild(img);
-        slot.classList.add('has-image');
-        placeholder.style.display = 'none';
-    }
-    
-    removeCard(slot, type, index) {
-        const img = slot.querySelector('.card-image');
-        const placeholder = slot.querySelector('.card-placeholder');
-        
-        if (img) {
-            img.remove();
-        }
-        
-        slot.classList.remove('has-image');
-        placeholder.style.display = 'flex';
-        
-        this.saveCardData(type, index, null);
-    }
-    
-    saveCardData(type, index, imageData) {
-        if (type === 'race' || type === 'community') {
-            this.data.cards[type] = imageData;
-        } else if (type === 'class') {
-            this.data.cards.class[index] = imageData;
-        } else if (type === 'domain') {
-            this.data.cards.domains[index] = imageData;
-        } else if (type === 'vault') {
-            this.data.cards.vault[index] = imageData;
-        }
-        this.saveCharacter();
-    }
-    
     updateDataFromField(fieldId, value) {
         const fieldMap = {
             'character-name': 'characterName',
@@ -1256,9 +1124,7 @@ class DaggerheartCharacter {
                 this.loadCards();
                 this.loadAbilityCounters();
                 this.updateAvailableDomains();
-                this.loadTiers(); // Nova linha
-
-                // Recarregar cartas selecionadas
+                this.loadTiers();
                 this.loadSelectedCards();
             }
         } catch (error) {
@@ -1457,7 +1323,7 @@ class DaggerheartCharacter {
         if (this.data.cards.race) {
             const raceSlot = document.querySelector('[data-type="race"][data-index="0"]');
             if (raceSlot) {
-                this.setCardImage(raceSlot, this.data.cards.race, 'race', 0);
+                this.setCardImageFromPath(raceSlot, this.data.cards.race, 'race', 0);
             }
         }
         
@@ -1465,7 +1331,7 @@ class DaggerheartCharacter {
         if (this.data.cards.community) {
             const communitySlot = document.querySelector('[data-type="community"][data-index="0"]');
             if (communitySlot) {
-                this.setCardImage(communitySlot, this.data.cards.community, 'community', 0);
+                this.setCardImageFromPath(communitySlot, this.data.cards.community, 'community', 0);
             }
         }
         
@@ -1474,7 +1340,7 @@ class DaggerheartCharacter {
             if (cardData) {
                 const classSlot = document.querySelector(`[data-type="class"][data-index="${index}"]`);
                 if (classSlot) {
-                    this.setCardImage(classSlot, cardData, 'class', index);
+                    this.setCardImageFromPath(classSlot, cardData, 'class', index);
                 }
             }
         });
@@ -1484,7 +1350,7 @@ class DaggerheartCharacter {
             if (cardData) {
                 const domainSlot = document.querySelector(`[data-type="domain"][data-index="${index}"]`);
                 if (domainSlot) {
-                    this.setCardImage(domainSlot, cardData, 'domain', index);
+                    this.setCardImageFromPath(domainSlot, cardData, 'domain', index);
                 }
             }
         });
@@ -1494,20 +1360,61 @@ class DaggerheartCharacter {
             if (cardData) {
                 const vaultSlot = document.querySelector(`[data-type="vault"][data-index="${index}"]`);
                 if (vaultSlot) {
-                    this.setCardImage(vaultSlot, cardData, 'vault', index);
+                    this.setCardImageFromPath(vaultSlot, cardData, 'vault', index);
                 }
             }
         });
+    }
+
+    setCardImageFromPath(slot, cardPath, type, index) {
+        const cardName = cardPath.split('/').pop();
+        const imagePath = `Cards/${cardPath}`;
+        
+        // Criar elemento de imagem
+        const img = document.createElement('img');
+        img.src = imagePath;
+        img.className = 'card-image';
+        img.alt = cardName;
+        img.onerror = function() {
+            // Fallback se a imagem não carregar
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'card-fallback';
+            fallback.innerHTML = `
+                <div style="text-align: center; padding: 10px;">
+                    <div style="font-size: 2em;">🃏</div>
+                    <div style="font-size: 0.8em; margin-top: 10px;">${cardName.replace('.jpg', '')}</div>
+                    <div style="font-size: 0.7em; color: #666; margin-top: 5px;">[Imagem salva]</div>
+                </div>
+            `;
+            this.parentNode.appendChild(fallback);
+        };
+        
+        const placeholder = slot.querySelector('.card-placeholder');
+        placeholder.style.display = 'none';
+        
+        // Remover conteúdo existente se houver
+        const existingImg = slot.querySelector('.card-image');
+        const existingFallback = slot.querySelector('.card-fallback');
+        if (existingImg) existingImg.remove();
+        if (existingFallback) existingFallback.remove();
+        
+        slot.appendChild(img);
+        slot.classList.add('has-image');
     }
     
     updateCardDisplays() {
         // Clear all card images first
         document.querySelectorAll('.card-slot').forEach(slot => {
             const img = slot.querySelector('.card-image');
+            const fallback = slot.querySelector('.card-fallback');
             const placeholder = slot.querySelector('.card-placeholder');
             
             if (img) {
                 img.remove();
+            }
+            if (fallback) {
+                fallback.remove();
             }
             
             slot.classList.remove('has-image');
@@ -1572,7 +1479,6 @@ class DaggerheartCharacter {
                 domains: [null, null, null, null, null],
                 vault: [null, null, null, null, null]
             },
-            // Tiers data
             tiers: {
                 tier2: {
                     checkedBoxes: [],
@@ -1610,19 +1516,7 @@ class DaggerheartCharacter {
         });
         
         // Clear all cards
-        document.querySelectorAll('.card-slot').forEach(slot => {
-            const img = slot.querySelector('.card-image');
-            const placeholder = slot.querySelector('.card-placeholder');
-            
-            if (img) {
-                img.remove();
-            }
-            
-            slot.classList.remove('has-image');
-            if (placeholder) {
-                placeholder.style.display = 'flex';
-            }
-        });
+        this.updateCardDisplays();
         
         // Reset interactive elements
         this.updateInteractiveElements();
@@ -1633,7 +1527,6 @@ class DaggerheartCharacter {
         localStorage.removeItem('daggerheart-character');
     }
 
-    // Adicionar este método ao script.js
     updateTierCounters() {
         const tiers = ['2', '3', '4'];
         
