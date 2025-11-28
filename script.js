@@ -1379,12 +1379,12 @@ class DaggerheartCharacter {
         img.alt = cardName;
         img.onerror = function() {
             // Fallback se a imagem não carregar
+            //<div style="font-size: 2em;">🃏</div>
             this.style.display = 'none';
             const fallback = document.createElement('div');
             fallback.className = 'card-fallback';
             fallback.innerHTML = `
                 <div style="text-align: center; padding: 10px;">
-                    <div style="font-size: 2em;">🃏</div>
                     <div style="font-size: 0.8em; margin-top: 10px;">${cardName.replace('.jpg', '')}</div>
                     <div style="font-size: 0.7em; color: #666; margin-top: 5px;">[Imagem salva]</div>
                 </div>
