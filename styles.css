@@ -1718,3 +1718,276 @@ html {
 .card-item.image::before {
     display: none !important;
 }
+
+/* =========================================== */
+/* REGRAS ULTRA FORTES PARA IMAGENS GRANDES NO MODAL */
+/* =========================================== */
+
+/* FORÇAR TODAS AS IMAGENS NO MODAL A SEREM GRANDES */
+.modal-body .card-preview-container {
+    height: 300px !important; /* Aumentado drasticamente */
+    min-height: 300px !important;
+    max-height: 300px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f8f6f3 !important;
+    border-radius: 10px !important;
+    overflow: visible !important; /* Mudei para visible para não cortar */
+    margin-bottom: 25px !important;
+    padding: 20px !important; /* Adiciona padding interno */
+}
+
+/* REGRA SUPER FORTE PARA AS IMAGENS */
+.modal-body .card-preview-container img.card-preview {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    min-width: 200px !important; /* Força largura mínima */
+    min-height: 200px !important; /* Força altura mínima */
+    object-fit: contain !important;
+    object-position: center !important;
+    transform: scale(1.3) !important; /* AMPLIA EM 30% */
+    transition: transform 0.3s ease !important;
+    image-rendering: -webkit-optimize-contrast !important;
+    image-rendering: crisp-edges !important;
+}
+
+/* Ampliar ainda mais no hover */
+.modal-body .card-item:hover .card-preview-container img.card-preview {
+    transform: scale(1.5) !important; /* 50% maior no hover */
+    z-index: 1000 !important;
+}
+
+/* AUMENTAR O TAMANHO DOS ITENS DO MODAL */
+.modal-body .card-item.image {
+    min-height: 450px !important; /* Aumentado drasticamente */
+    height: auto !important;
+    padding: 30px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
+
+/* AUMENTAR O GRID PARA ITENS MAIORES */
+.modal-body .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 30px !important;
+    padding: 25px !important;
+}
+
+/* AUMENTAR O MODAL TODO */
+.modal-content {
+    width: 96% !important;
+    max-width: 1600px !important; /* Aumentado */
+    max-height: 96vh !important;
+}
+
+.modal-body {
+    max-height: calc(96vh - 80px) !important;
+    padding: 30px !important;
+}
+
+/* GARANTIR QUE IMAGENS DE CARTA TENHAM TRATAMENTO ESPECIAL */
+.card-item[data-type="image"] .card-preview-container,
+.card-item.image .card-preview-container {
+    height: 320px !important; /* Ainda maior para cartas */
+    min-height: 320px !important;
+    background: linear-gradient(135deg, #f8f6f3 0%, #e8e6e3 100%) !important;
+    border: 2px solid #8b4513 !important;
+}
+
+/* SE AS IMAGENS AINDA ESTIVEREM PEQUENAS, USE ESTA REGRA NUCLEAR */
+.modal-body img[src*=".png"],
+.modal-body img[src*=".jpg"],
+.modal-body img[src*=".jpeg"],
+.modal-body img[src*=".gif"] {
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: scale(1.5) !important;
+    transform-origin: center center !important;
+}
+
+/* REGRA ESPECÍFICA PARA CARTAS DE CLASSE/ESPECIALIZAÇÃO */
+.card-item:has(img[src*="Druid"]),
+.card-item:has(img[src*="Warden"]),
+.card-item:has(img[src*="Foundation"]),
+.card-item:has(img[src*="Mastery"]),
+.card-item:has(img[src*="Specialisation"]) {
+    min-height: 500px !important;
+}
+
+.card-item:has(img[src*="Druid"]) .card-preview-container,
+.card-item:has(img[src*="Warden"]) .card-preview-container,
+.card-item:has(img[src*="Foundation"]) .card-preview-container,
+.card-item:has(img[src*="Mastery"]) .card-preview-container,
+.card-item:has(img[src*="Specialisation"]) .card-preview-container {
+    height: 350px !important;
+    min-height: 350px !important;
+}
+
+.card-item:has(img[src*="Druid"]) img,
+.card-item:has(img[src*="Warden"]) img,
+.card-item:has(img[src*="Foundation"]) img,
+.card-item:has(img[src*="Mastery"]) img,
+.card-item:has(img[src*="Specialisation"]) img {
+    transform: scale(1.8) !important;
+}
+
+/* =========================================== */
+/* MODAL FULLSCREEN PARA MELHOR VISUALIZAÇÃO */
+/* =========================================== */
+
+/* Alternativa: Modal quase fullscreen */
+.modal-content.fullscreen-mode {
+    width: 98% !important;
+    max-width: 98% !important;
+    height: 98vh !important;
+    max-height: 98vh !important;
+    margin: 1vh auto !important;
+}
+
+.modal-content.fullscreen-mode .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
+}
+
+.modal-content.fullscreen-mode .card-item {
+    min-height: 500px !important;
+}
+
+.modal-content.fullscreen-mode .card-preview-container {
+    height: 350px !important;
+    min-height: 350px !important;
+}
+
+.modal-content.fullscreen-mode img.card-preview {
+    transform: scale(1.6) !important;
+}
+
+/* =========================================== */
+/* BOTÃO PARA ALTERNAR TAMANHO DAS IMAGENS */
+/* =========================================== */
+
+.modal-header .size-toggle {
+    background: #8b4513;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+}
+
+.modal-header .size-toggle:hover {
+    background: #654321;
+    transform: scale(1.05);
+}
+
+/* Classe para imagens extra grandes */
+.card-preview-container.extra-large {
+    height: 400px !important;
+    min-height: 400px !important;
+}
+
+.card-preview-container.extra-large img {
+    transform: scale(2) !important;
+}
+
+/* =========================================== */
+/* VISUALIZAÇÃO INDIVIDUAL DE CARTA (ZOOM) */
+/* =========================================== */
+
+.card-zoom-view {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10001;
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+    max-width: 90vw;
+    max-height: 90vh;
+    display: none;
+}
+
+.card-zoom-view.active {
+    display: block;
+}
+
+.card-zoom-view img {
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* =========================================== */
+/* ESTILOS PARA DIFERENTES TIPOS DE CARTA */
+/* =========================================== */
+
+/* Cartas de classe */
+.card-item.class-card .card-preview-container {
+    height: 280px !important;
+    background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 100%) !important;
+    border: 3px solid #2c5e7a !important;
+}
+
+.card-item.class-card img {
+    transform: scale(1.4) !important;
+}
+
+/* Cartas de especialização */
+.card-item.specialization-card .card-preview-container {
+    height: 280px !important;
+    background: linear-gradient(135deg, #f8f4e8 0%, #f0e8d4 100%) !important;
+    border: 3px solid #7a5e2c !important;
+}
+
+.card-item.specialization-card img {
+    transform: scale(1.4) !important;
+}
+
+/* =========================================== */
+/* GARANTIA FINAL - SE NADA FUNCIONAR */
+/* =========================================== */
+
+/* Esta regra vai sobrepor TUDO */
+.modal * img {
+    width: auto !important;
+    height: auto !important;
+    min-width: 250px !important;
+    min-height: 250px !important;
+    max-width: 1000px !important;
+    max-height: 1000px !important;
+    object-fit: contain !important;
+    image-rendering: optimizeQuality !important;
+}
+
+/* Forçar todas as imagens do modal a serem grandes */
+#cardSelectionModal img,
+.modal img,
+[class*="modal"] img {
+    transform: scale(1.5) !important;
+    transform-origin: center !important;
+}
+
+/* Se usar IDs específicos */
+#cardSelectionModal .card-preview,
+#cardModal .card-preview,
+.modal .card-preview {
+    width: auto !important;
+    height: auto !important;
+    min-width: 280px !important;
+    min-height: 280px !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: scale-down !important;
+}
