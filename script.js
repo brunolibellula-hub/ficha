@@ -1623,3 +1623,85 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = DaggerheartCharacter;
 }
+
+// Adicione este código ao seu arquivo JavaScript existente
+
+function forceLargeImagesInModal() {
+    // Aguarde o modal abrir
+    setTimeout(() => {
+        const modalImages = document.querySelectorAll('.modal .card-preview');
+        
+        modalImages.forEach(img => {
+            // Forçar atributos de tamanho
+            img.style.width = 'auto';
+            img.style.height = 'auto';
+            img.style.minWidth = '280px';
+            img.style.minHeight = '280px';
+            img.style.maxWidth = 'none';
+            img.style.maxHeight = 'none';
+            img.style.objectFit = 'contain';
+            img.style.transform = 'scale(1.5)';
+            img.style.transformOrigin = 'center';
+            
+            // Se a imagem já foi carregada, redimensione
+            if (img.complete) {
+                resizeImage(img);
+            } else {
+                img.onload = function() {
+                    resizeImage(this);
+                };
+            }
+        });
+    }, 100); // Pequeno delay para garantir que o modal está aberto
+}
+
+function resizeImage(imgElement) {
+    // Tente várias abordagens para aumentar a imagem
+    const container = imgElement.closest('.card-preview-container');
+    if (container) {
+        container.style.height = '300px';
+        container.style.minHeight = '300px';
+    }
+    
+    // Tente usar o tamanho natural da imagem
+    const naturalWidth = imgElement.naturalWidth;
+    const naturalHeight = imgElement.naturalHeight;
+    
+    if (naturalWidth > 0 && naturalHeight > 0) {
+        // Aumente baseado no tamanho original
+        const scaleFactor = 2.0; // Dobrar o tamanho
+        imgElement.style.width = (naturalWidth * scaleFactor) + 'px';
+        imgElement.style.height = (naturalHeight * scaleFactor) + 'px';
+    }
+}
+
+// Execute quando o modal de seleção de cartas for aberto
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('cardSelectionModal'); // Ajuste o ID se necessário
+    
+    if (modal) {
+        // Observar quando o modal é aberto
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && 
+                    mutation.attributeName === 'style') {
+                    const display = modal.style.display;
+                    if (display === 'block' || display === '') {
+                        forceLargeImagesInModal();
+                    }
+                }
+            });
+        });
+        
+        observer.observe(modal, { attributes: true });
+    }
+    
+    // Também forçar ao clicar em qualquer coisa que abra o modal
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('[onclick*="openCardSelection"]') || 
+            e.target.closest('[data-action*="card"]')) {
+            setTimeout(forceLargeImagesInModal, 300);
+        }
+    });
+});
+
