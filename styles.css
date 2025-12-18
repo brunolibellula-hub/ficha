@@ -481,21 +481,46 @@ body {
     text-align: center;
 }
 
-.experience-bar {
-    height: 20px;
-    background: #f8f6f3;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    overflow: hidden;
-    cursor: pointer;
+.experience-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.experience-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #28a745, #20c997);
-    width: 0%;
-    transition: width 0.3s ease;
+.experience-text-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.experience-text-row label {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #8b4513;
+}
+
+.experience-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 0.9em;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+.experience-textarea:focus {
+    outline: none;
+    border-color: #8b4513;
+    box-shadow: 0 0 5px rgba(139, 69, 19, 0.3);
+}
+
+.experience-textarea::placeholder {
+    color: #999;
+    font-style: italic;
 }
 
 /* Gold Section */
