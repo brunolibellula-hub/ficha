@@ -634,7 +634,7 @@ class DaggerheartCharacter {
             
             newCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => {
-                    this.handleTierOptionChange(tier, e.target);
+                    this.(tier, e.target);
                 });
             });
         });
@@ -647,11 +647,21 @@ class DaggerheartCharacter {
         // Obter ID único do checkbox
         const checkboxId = this.getCheckboxId(checkbox);
         
+        // Verificar se é uma opção especial que custa 2 pontos
+        const isSpecialOption = checkbox.hasAttribute('data-cost');
+        const optionCost = isSpecialOption ? parseInt(checkbox.getAttribute('data-cost')) : 1;
+        
         if (checkbox.checked) {
-            // Verificar se já atingiu o limite
-            if (tierData.checkedBoxes.length >= tierData.maxChecks) {
+            // Calcular pontos atuais gastos
+            const currentPoints = this.calculateTierPoints(tierData.checkedBoxes, tier);
+            
+            // Calcular pontos que seriam gastos com esta opção
+            const wouldSpendPoints = currentPoints + optionCost;
+            
+            // Verificar se excede o limite (6 pontos)
+            if (wouldSpendPoints > tierData.maxChecks) {
                 checkbox.checked = false;
-                this.showNotification(`Você só pode marcar ${tierData.maxChecks} checkboxes no Tier ${tier}!`, 'warning');
+                this.showNotification(`Esta opção custa ${optionCost} pontos! Você só tem ${tierData.maxChecks - currentPoints} ponto(s) disponível(is) no Tier ${tier}.`, 'warning');
                 return;
             }
             
@@ -664,9 +674,38 @@ class DaggerheartCharacter {
             tierData.checkedBoxes = tierData.checkedBoxes.filter(id => id !== checkboxId);
         }
         
-        console.log(`Tier ${tier}: ${tierData.checkedBoxes.length}/${tierData.maxChecks} checkboxes marcados`);
+        console.log(`Tier ${tier}: ${this.calculateTierPoints(tierData.checkedBoxes, tier)}/${tierData.maxChecks} pontos gastos`);
         this.saveCharacter();
         this.updateTierCounters();
+    }
+
+    calculateTierPoints(checkedBoxes, tier) {
+        let totalPoints = 0;
+        
+        checkedBoxes.forEach(checkboxId => {
+            // Encontrar o checkbox pelo ID
+            const checkbox = this.findCheckboxById(checkboxId, tier);
+            if (checkbox) {
+                const cost = checkbox.hasAttribute('data-cost') ? 
+                             parseInt(checkbox.getAttribute('data-cost')) : 1;
+                totalPoints += cost;
+            }
+        });
+        
+        return totalPoints;
+    }
+
+    findCheckboxById(checkboxId, tier) {
+        const checkboxes = document.querySelectorAll(`.tier[data-tier="${tier}"] input[type="checkbox"]`);
+        
+        for (const checkbox of checkboxes) {
+            const id = this.getCheckboxId(checkbox);
+            if (id === checkboxId) {
+                return checkbox;
+            }
+        }
+        
+        return null;
     }
 
     getCheckboxId(checkbox) {
@@ -674,7 +713,7 @@ class DaggerheartCharacter {
         const tier = tierElement.getAttribute('data-tier');
         const index = Array.from(tierElement.querySelectorAll('input[type="checkbox"]')).indexOf(checkbox);
         return `tier${tier}_checkbox${index}`;
-    }
+}
 
     bindExperienceTexts() {
         const textAreas = document.querySelectorAll('.experience-textarea');
@@ -688,7 +727,7 @@ class DaggerheartCharacter {
 
     loadTiers() {
         const tiers = ['2', '3', '4'];
-        
+    
         tiers.forEach(tier => {
             const tierKey = `tier${tier}`;
             const checkboxes = document.querySelectorAll(`.tier[data-tier="${tier}"] input[type="checkbox"]`);
@@ -1512,6 +1551,10 @@ class DaggerheartCharacter {
                 domains: [null, null, null, null, null],
                 vault: [null, null, null, null, null]
             },
+            document.querySelectorAll('.tier input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            }),
+
             tiers: {
                 tier2: {
                     checkedBoxes: [],
@@ -1532,6 +1575,8 @@ class DaggerheartCharacter {
         // Reset displays
         this.updateAllCounterDisplays();
 
+        this.updateTierCounters();
+    
         // Limpar checkboxes dos tiers
         document.querySelectorAll('.tier input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = false;
@@ -1567,18 +1612,19 @@ class DaggerheartCharacter {
     }
 
     updateTierCounters() {
-        const tiers = ['2', '3', '4'];
-        
+       const tiers = ['2', '3', '4'];
+    
         tiers.forEach(tier => {
             const tierKey = `tier${tier}`;
             const counterElement = document.querySelector(`.tier[data-tier="${tier}"] .tier-counter .current`);
             
             if (counterElement) {
-                const currentCount = this.data.tiers[tierKey].checkedBoxes.length;
-                counterElement.textContent = currentCount;
+                // Calcular pontos gastos em vez de apenas contar checkboxes
+                const pointsSpent = this.calculateTierPoints(this.data.tiers[tierKey].checkedBoxes, tier);
+                counterElement.textContent = pointsSpent;
                 
                 // Mudar cor se estiver perto do limite
-                if (currentCount >= this.data.tiers[tierKey].maxChecks) {
+                if (pointsSpent >= this.data.tiers[tierKey].maxChecks) {
                     counterElement.style.color = '#dc3545';
                 } else {
                     counterElement.style.color = '#28a745';
