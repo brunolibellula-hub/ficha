@@ -38,7 +38,7 @@ class DaggerheartCharacter {
             hope: Array(6).fill(false),
             
             // Experience bars
-            experience: Array(5).fill(0),
+            experience: ['', '', '', '', ''], // Array de strings para textos
             
             // Gold tracking
             goldHandfuls: Array(8).fill(false),
@@ -676,6 +676,16 @@ class DaggerheartCharacter {
         return `tier${tier}_checkbox${index}`;
     }
 
+    bindExperienceTexts() {
+        const textAreas = document.querySelectorAll('.experience-textarea');
+        textAreas.forEach((textarea, index) => {
+            textarea.addEventListener('input', () => {
+                this.data.experience[index] = textarea.value;
+                this.saveCharacter();
+            });
+        });
+    }
+
     loadTiers() {
         const tiers = ['2', '3', '4'];
         
@@ -759,7 +769,7 @@ class DaggerheartCharacter {
         });
         
         // Create Experience bars
-        this.createExperienceBars();
+        //this.createExperienceBars();
         
         // Create Gold circles
         this.createClickableBoxes('gold-handfuls', 8, 'gold-circle', (index) => {
@@ -788,6 +798,8 @@ class DaggerheartCharacter {
             this.data.armorBoxes[index] = !this.data.armorBoxes[index];
             this.saveCharacter();
         });
+        // Adicione vinculação dos campos de texto de experiência
+        this.bindExperienceTexts();
     }
     
     createClickableBoxes(containerId, count, className, callback) {
@@ -806,7 +818,8 @@ class DaggerheartCharacter {
             container.appendChild(box);
         }
     }
-    
+
+    /*
     createExperienceBars() {
         const container = document.getElementById('experience-bars');
         if (!container) return;
@@ -832,7 +845,7 @@ class DaggerheartCharacter {
             
             container.appendChild(bar);
         }
-    }
+    }*/
     
     bindEvents() {
         // Basic info fields
@@ -873,6 +886,9 @@ class DaggerheartCharacter {
         
         // Inventory weapon fields
         this.bindInventoryWeaponFields();
+
+        // Adicione a vinculação dos campos de texto de experiência
+        this.bindExperienceTexts();
         
         // Control buttons
         document.getElementById('save-character').addEventListener('click', () => {
@@ -1214,6 +1230,14 @@ class DaggerheartCharacter {
         if (levelDisplay) {
             levelDisplay.textContent = this.data.level;
         }
+
+        // Experience texts
+        const textAreas = document.querySelectorAll('.experience-textarea');
+        textAreas.forEach((textarea, index) => {
+            if (this.data.experience[index] !== undefined) {
+                textarea.value = this.data.experience[index];
+            }
+        });
         
         // Weapon fields
         this.populateWeaponFields('primary', 'primaryWeapon');
@@ -1280,7 +1304,13 @@ class DaggerheartCharacter {
         this.updateBoxes('hope-track', this.data.hope, 'hope-diamond');
         
         // Update Experience bars
-        this.updateExperienceBars();
+        //this.updateExperienceBars();
+        const textAreas = document.querySelectorAll('.experience-textarea');
+        textAreas.forEach((textarea, index) => {
+            if (this.data.experience[index] !== undefined) {
+                textarea.value = this.data.experience[index];
+            }
+        });
         
         // Update Gold circles
         this.updateBoxes('gold-handfuls', this.data.goldHandfuls, 'gold-circle');
@@ -1307,7 +1337,8 @@ class DaggerheartCharacter {
             }
         });
     }
-    
+
+    /*
     updateExperienceBars() {
         const container = document.getElementById('experience-bars');
         if (!container) return;
@@ -1318,7 +1349,7 @@ class DaggerheartCharacter {
                 fill.style.width = this.data.experience[index] + '%';
             }
         });
-    }
+    }*/
     
     loadCards() {
         // Load race card
@@ -1459,7 +1490,7 @@ class DaggerheartCharacter {
             hp: Array(12).fill(false),
             stress: Array(12).fill(false),
             hope: Array(6).fill(false),
-            experience: Array(5).fill(0),
+            //experience: Array(5).fill(0),
             goldHandfuls: Array(8).fill(false),
             goldBags: Array(8).fill(false),
             goldChest: Array(1).fill(false),
@@ -1516,8 +1547,14 @@ class DaggerheartCharacter {
                 field.value = '';
             }
         });
-        
-        // Clear all cards
+
+        this.data.experience = ['', '', '', '', ''];
+
+        document.querySelectorAll('.experience-textarea').forEach(textarea => {
+            textarea.value = '';
+        });
+            
+            // Clear all cards
         this.updateCardDisplays();
         
         // Reset interactive elements
