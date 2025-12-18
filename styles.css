@@ -1762,3 +1762,35 @@ html {
         font-size: 4em;
     }
 }
+
+/* No arquivo styles.css, adicione: */
+
+.option-cost {
+    font-weight: bold;
+    color: #dc3545; /* Vermelho para destacar o custo */
+    margin-right: 5px;
+    font-size: 0.9em;
+    flex-shrink: 0;
+}
+
+.option-text {
+    flex: 1;
+}
+
+/* Ajuste para as opções especiais */
+.tier-option.special-option {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tier-option.special-option input[type="checkbox"] {
+    margin-top: 2px;
+}
+
+/* Para opções especiais marcadas, adicione um destaque visual */
+.tier-option.special-option input[type="checkbox"]:checked + .option-cost {
+    color: #28a745; /* Verde quando marcada */
+    text-decoration: line-through;
+}
